@@ -50,8 +50,10 @@ td:first-child, th:first-child { text-align: left; }
     <button id="bScreen">画面共有</button>
     <button id="bPlay">一時停止</button>
     <select id="model">
-      <option value="models/bear_det.onnx">精度優先 960</option>
-      <option value="models/bear_det_640.onnx">速さ優先 640（小さい熊を見落としやすい）</option>
+      <option value="models/bear_det.onnx">1 回目・精度優先 960</option>
+      <option value="models/bear_det_640.onnx">1 回目・速さ優先 640</option>
+      <option value="models/bear_det2.onnx">2 回目（町の画像入り）・精度優先 960</option>
+      <option value="models/bear_det2_640.onnx">2 回目（町の画像入り）・速さ優先 640</option>
     </select>
     <span id="status">読み込み中…</span>
   </div>
@@ -74,7 +76,10 @@ td:first-child, th:first-child { text-align: left; }
       </div>
       <div class="panel" style="margin-top:14px">
         <h2>このモデルについて</h2>
-        <div class="note" id="about"><p style="margin:0 0 8px;padding:6px 8px;border-radius:6px;background:rgba(229,72,77,.12);color:var(--fg)"><b>いまのモデルの弱点（再学習中）</b>：玄関カメラ（夜）の動画では、停めてある黒い車を熊と誤検知し、歩いている熊はほとんど見つけません。学習に車や家の画像が入っていなかったためで、町の画像を足して学習し直しています。</p>
+        <div class="note" id="about"><p style="margin:0 0 8px;padding:6px 8px;border-radius:6px;background:rgba(229,72,77,.12);color:var(--fg)"><b>2 つのモデルの違い</b>：<br>
+        <b>1 回目</b>は、学習の「熊のいない画像」が森ばかりで、玄関カメラ（夜）の停めてある黒い車を熊と誤検知します（全フレームの 68%）。<br>
+        <b>2 回目</b>は、車・犬・人などの町の画像と夜の道路を足して学び直したもので、車の誤検知は 8% に減りました。ただ熊にも慎重になり、図書館の熊で鳴る割合が 67% から 16% に下がりました（しきい値を下げると増えます）。<br>
+        どちらも、玄関カメラで歩いている熊はほとんど見つけられません。教師に使った MegaDetector でも見つけられない、上から見た夜の熊です。</p>
         学習に使っていない画像で測った、しきい値 0.4 での結果です（精度優先 960）。
         <table style="margin:6px 0">
           <tr><th></th><th>熊で鳴る</th><th>誤報</th></tr>
